@@ -1,19 +1,6 @@
-import { Provider } from 'react-redux';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import store from '../redux/store';
-import '../styles/globals.css';
+import '../styles/globals.css'
+import type { AppProps } from 'next/app'
 
-function MyApp({ Component, pageProps }) {
-  return (
-      <Provider store={store}>
-        <div className="wrapper">
-          <Navbar />
-          <Component {...pageProps} />
-          <Footer />
-        </div>
-      </Provider>
-  );
+export default function App({ Component, pageProps }: AppProps) {
+  return <Component {...pageProps} />
 }
-
-export default MyApp;
