@@ -9,7 +9,6 @@
     }
   },
   "extends": [
-    "next/core-web-vitals",
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
@@ -37,6 +36,7 @@
     "no-return-await": "off",
     "no-unused-vars": "off",
     "react/jsx-curly-brace-presence": "off",
+    "max-len": ["warn", { "code": 80 }],
     "import/order": [
       "warn",
       {
