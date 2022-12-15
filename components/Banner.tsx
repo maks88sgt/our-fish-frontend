@@ -1,5 +1,6 @@
-import { ImageList, ImageListItem, Typography, useMediaQuery } from '@mui/material';
 import { useEffect, useState } from 'react';
+
+import { ImageList, ImageListItem, Typography, useMediaQuery } from '@mui/material';
 import { Box, useTheme } from '@mui/system';
 
 export const Banner = () => {

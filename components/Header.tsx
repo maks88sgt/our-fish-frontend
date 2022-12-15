@@ -1,12 +1,15 @@
+import { MouseEvent, useState } from 'react';
+
+import MenuIcon from '@mui/icons-material/Menu';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { AppBar, Divider, IconButton, Menu, MenuItem, Tab, Tabs, useMediaQuery } from '@mui/material';
-import logo from '../assets/logo.svg';
+import { Box, useTheme } from '@mui/system';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { Box, useTheme } from '@mui/system';
-import MenuIcon from '@mui/icons-material/Menu';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { MouseEvent, useState } from 'react';
+
+import logo from '../assets/logo.svg';
+
 
 
 const enum Paths {
@@ -25,19 +28,19 @@ export const Header = () => {
     const { asPath } = useRouter();
     const theme = useTheme();
     const matches = useMediaQuery(theme.breakpoints.up('sm'));
-    return <AppBar color={'transparent'} position='static' sx={{
+    return <AppBar position='sticky' sx={{
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
         padding: 4,
         justifyContent: 'space-between',
-        backgroundColor: 'rgba(89,168,237,0.5)',
+        //backgroundColor: theme.palette.primary.main,
 
     }}
     >
         <Image src={logo} width={150} height={55} alt={'logo'} />
         {matches ? <Tabs textColor={'primary'}
-                         indicatorColor={'primary'} value={pathMap[asPath as Paths]}>
+                         indicatorColor={'secondary'} value={pathMap[asPath as Paths]}>
             <Link href={'/'}><Tab label='Магазин' value={0} /></Link>
             <Link href={'/cart'}><Tab label='Корзина' value={1} /></Link>
             <Link href={'/info'}><Tab label='О нас' value={2} /></Link>
