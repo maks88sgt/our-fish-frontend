@@ -266,6 +266,7 @@ export const ProductEditor = ({
 };
 
 export type ProductDTO = {
+    _id: string;
     name: string;
     price: number;
     units: Units;

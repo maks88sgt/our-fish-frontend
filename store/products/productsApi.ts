@@ -9,7 +9,7 @@ export const productsApi = createApi({
     tagTypes: ['Products'],
     endpoints: (build) => ({
         getAllProductsBySeller: build.query<
-            { message: string },
+            ProductDTO[],
             { seller: string | null; accessToken: string | null }
         >({
             query: ({ seller, accessToken }) => ({
@@ -63,6 +63,17 @@ export const productsApi = createApi({
             }),
             invalidatesTags: ['Products'],
         }),
+        deleteProduct: build.mutation<
+            { message: string },
+            { id: string } & { accessToken: string }
+        >({
+            query: ({ id, accessToken }) => ({
+                url: `/${id}`,
+                method: 'DELETE',
+                headers: { 'x-access-token': accessToken },
+            }),
+            invalidatesTags: ['Products'],
+        }),
     }),
 });
 
@@ -70,4 +81,5 @@ export const {
     useGetAllProductsBySellerQuery,
     useCreateProductMutation,
     useGetAllPublishedProductsQuery,
+    useDeleteProductMutation,
 } = productsApi;

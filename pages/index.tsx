@@ -6,6 +6,7 @@ import styles from '../styles/Home.module.css';
 import { ProductGrid } from '../components/ProductGrid';
 import { Footer } from '../components/Footer';
 import { Box } from '@mui/system';
+import { ProductDTO } from '../components/ProductEditor';
 
 type IndexPageProps = {
     productsList: any[];
@@ -35,16 +36,7 @@ export async function getStaticProps() {
     };
 }
 
-export type Product = {
-    id: string;
-    name: string;
-    price: number;
-    description: string;
-    features: string[];
-    categories: string[];
-};
-
-export type IndexPageDataType = GeneralPaginatedResponseType<Product[]>;
+export type IndexPageDataType = GeneralPaginatedResponseType<ProductDTO[]>;
 
 export type GeneralResponseType<T, S = void> = {
     message: string | null;
