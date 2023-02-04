@@ -9,14 +9,14 @@ import { Box } from '@mui/system';
 
 type IndexPageProps = {
     productsList: any[];
-}
+};
 
 export default function Index({ productsList }: IndexPageProps) {
     return (
         <Box className={styles.container}>
             <Head>
                 <title>Наша рыба</title>
-                <link rel='icon' href='/favicon.ico' />
+                <link rel="icon" href="/favicon.ico" />
             </Head>
 
             <main className={styles.main}>
@@ -30,10 +30,8 @@ export default function Index({ productsList }: IndexPageProps) {
 }
 
 export async function getStaticProps() {
-    const { data } = await fetch('/products') as unknown as IndexPageDataType;
-
     return {
-        props: { productsList: data },
+        props: { productsList: [] },
     };
 }
 
@@ -43,10 +41,10 @@ export type Product = {
     price: number;
     description: string;
     features: string[];
-    categories: string[]
-}
+    categories: string[];
+};
 
-export type IndexPageDataType = GeneralPaginatedResponseType<Product[]>
+export type IndexPageDataType = GeneralPaginatedResponseType<Product[]>;
 
 export type GeneralResponseType<T, S = void> = {
     message: string | null;
@@ -57,7 +55,7 @@ export type GeneralResponseType<T, S = void> = {
 export type GeneralPaginatedResponseType<T, S = void> = GeneralResponseType<
     T,
     S
-    > & {
+> & {
     pagination: PaginationResponse;
 };
 

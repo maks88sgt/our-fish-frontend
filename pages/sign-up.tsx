@@ -5,7 +5,12 @@ import styles from '../styles/Home.module.css';
 import { Footer } from '../components/Footer';
 import { Box } from '@mui/system';
 import { Button, FormControl, TextField, Typography } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSignInMutation, useSignUpMutation } from '../store/auth/authApi';
+import { setUserData } from '../store/auth/authActions';
+import { useDispatch } from 'react-redux';
+import { redirect } from 'next/navigation';
+import { useRouter } from 'next/router';
 
 export default function SignUp() {
     const [usernameHelperText, setUsernameHelperText] = useState('');
@@ -63,6 +68,32 @@ export default function SignUp() {
         }
     };
 
+    const [signUp, signUpResponse] = useSignUpMutation();
+    const [signIn, signInResponse] = useSignInMutation();
+
+    useEffect(() => {
+        if (signUpResponse.isSuccess) {
+            signIn({ username, password });
+        }
+    }, [signUpResponse]);
+
+    const dispatch = useDispatch();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (signInResponse.isSuccess) {
+            dispatch(
+                setUserData({
+                    accessToken: signInResponse.data.accessToken,
+                    username: signInResponse.data.accessToken,
+                    roles: signInResponse.data.roles,
+                }),
+            );
+            console.log('signInResponse', signInResponse);
+            router.push('/');
+        }
+    }, [signUpResponse]);
+
     return (
         <Box className={styles.container}>
             <Head>
@@ -76,6 +107,7 @@ export default function SignUp() {
                     sx={{
                         display: 'flex',
                         flexDirection: 'column',
+                        alignItems: 'center',
                         gap: '18px',
                         marginTop: '24px',
                         width: ['80vw', '80vw', '50vw'],
@@ -98,6 +130,7 @@ export default function SignUp() {
                             onChange={(ev) => {
                                 setUsername(ev.target.value);
                             }}
+                            fullWidth={true}
                         />
                     </>
                     <>
@@ -114,6 +147,7 @@ export default function SignUp() {
                             onChange={(ev) => {
                                 setEmail(ev.target.value);
                             }}
+                            fullWidth={true}
                         />
                     </>
                     <>
@@ -131,6 +165,7 @@ export default function SignUp() {
                             onChange={(ev) => {
                                 setPassword(ev.target.value);
                             }}
+                            fullWidth={true}
                         />
                     </>
                     <>
@@ -148,6 +183,7 @@ export default function SignUp() {
                             onChange={(ev) => {
                                 setRepeatPassword(ev.target.value);
                             }}
+                            fullWidth={true}
                         />
                     </>
                     <Button
@@ -166,6 +202,7 @@ export default function SignUp() {
                             ) {
                                 return;
                             }
+                            signUp({ username, email, password });
                         }}
                     >
                         Зарегистрироваться
