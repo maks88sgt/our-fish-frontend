@@ -1,9 +1,11 @@
 import { MouseEvent, useState } from 'react';
 
 import MenuIcon from '@mui/icons-material/Menu';
+import LoginIcon from '@mui/icons-material/Login';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import {
     AppBar,
+    Avatar,
     Divider,
     IconButton,
     Menu,
@@ -18,6 +20,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import logo from '../assets/logo.svg';
+import { AuthorizationModal } from './AuthorizationModal';
+import { RootState } from '../store/store';
+import { useSelector } from 'react-redux';
+import { stringAvatar } from '../utils/stringAvatar';
 
 const enum Paths {
     index = '/',
@@ -35,6 +41,13 @@ export const Header = () => {
     const { asPath } = useRouter();
     const theme = useTheme();
     const matches = useMediaQuery(theme.breakpoints.up('sm'));
+
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+
+    const { username, roles } = useSelector((state: RootState) => {
+        return state.auth;
+    });
+
     return (
         <AppBar
             position="sticky"
@@ -62,13 +75,24 @@ export const Header = () => {
                     <Link href={'/info'}>
                         <Tab label="О нас" value={2} />
                     </Link>
-                    <IconButton
-                        onClick={() => console.log('Modal')}
-                    ></IconButton>
+                    {!username ? (
+                        <IconButton onClick={() => setModalIsOpen(true)}>
+                            <LoginIcon
+                                fontSize={'large'}
+                                sx={{ color: 'white' }}
+                            />
+                        </IconButton>
+                    ) : (
+                        <Avatar {...stringAvatar(username)} />
+                    )}
                 </Tabs>
             ) : (
                 <MobileHeader />
             )}
+            <AuthorizationModal
+                setModalIsOpen={setModalIsOpen}
+                modalIsOpen={modalIsOpen}
+            />
         </AppBar>
     );
 };

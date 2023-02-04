@@ -21,7 +21,9 @@ export const authSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(setUserData, (state, action) => {
-            state = action.payload;
+            state.accessToken = action.payload.accessToken;
+            state.username = action.payload.username;
+            state.roles = action.payload.roles;
         });
     },
 });

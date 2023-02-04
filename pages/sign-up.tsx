@@ -22,7 +22,7 @@ export default function SignUp() {
                 'Имя пользователя должно содержать боллее 3 символов',
             );
         }
-        if (!/^[a-zA-Zа-яА-Я]*$/g.test(name)) {
+        if (!/^[a-zA-Zа-яА-Я ]*$/g.test(name)) {
             setUsernameHelperText(
                 'Имя пользователя может содержать только буквы и пробелы',
             );
@@ -89,7 +89,6 @@ export default function SignUp() {
                     roles: signInResponse.data.roles,
                 }),
             );
-            console.log('signInResponse', signInResponse);
             router.push('/');
         }
     }, [signUpResponse]);
