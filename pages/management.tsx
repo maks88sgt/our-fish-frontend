@@ -7,8 +7,12 @@ import { useSelector } from 'react-redux';
 import { AvailableRoles } from '../store/auth/authReducer';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { useGetAllProductsBySellerQuery } from '../store/products/productsApi';
+import {
+    useGetAllProductsBySellerQuery,
+    useGetAllPublishedProductsQuery,
+} from '../store/products/productsApi';
 import { Box } from '@mui/system';
+import { ProductEditor } from '../components/ProductEditor';
 
 export default function Management() {
     const { roles, seller, accessToken } = useSelector(
@@ -26,7 +30,7 @@ export default function Management() {
     }, [router, isModerator, seller, accessToken]);
 
     const { data } = useGetAllProductsBySellerQuery(
-        { seller },
+        { seller, accessToken },
         { skip: !seller },
     );
 
@@ -41,6 +45,7 @@ export default function Management() {
 
             <main className={styles.main}>
                 <Header />
+                <ProductEditor />
             </main>
         </div>
     );
