@@ -63,6 +63,38 @@ export const productsApi = createApi({
             }),
             invalidatesTags: ['Products'],
         }),
+        updateProduct: build.mutation<
+            { message: string },
+            Partial<ProductDTO> & { accessToken: string }
+        >({
+            query: ({
+                _id,
+                name,
+                price,
+                units,
+                category,
+                properties,
+                seller,
+                description,
+                published,
+                accessToken,
+            }) => ({
+                url: `/${_id}`,
+                body: {
+                    name,
+                    price,
+                    units,
+                    category,
+                    properties,
+                    seller,
+                    description,
+                    published,
+                },
+                method: 'PUT',
+                headers: { 'x-access-token': accessToken },
+            }),
+            invalidatesTags: ['Products'],
+        }),
         deleteProduct: build.mutation<
             { message: string },
             { id: string } & { accessToken: string }
@@ -82,4 +114,5 @@ export const {
     useCreateProductMutation,
     useGetAllPublishedProductsQuery,
     useDeleteProductMutation,
+    useUpdateProductMutation,
 } = productsApi;

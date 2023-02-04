@@ -43,6 +43,10 @@ export default function Management() {
 
     console.log('>>>>>>>>>>>>>>>>>>', data);
 
+    const [existingProduct, setExistingProduct] = useState<
+        ProductDTO | undefined
+    >(undefined);
+
     return (
         <div className={styles.container}>
             <Head>
@@ -54,13 +58,17 @@ export default function Management() {
                 <Header />
                 <Button
                     variant={'contained'}
-                    onClick={() => setEditorIsOpen(true)}
+                    onClick={() => {
+                        setExistingProduct(undefined);
+                        setEditorIsOpen(true);
+                    }}
                 >
                     Добавить новый продукт
                 </Button>
                 <ProductEditor
                     editorIsOpen={editorIsOpen}
                     setEditorIsOpen={setEditorIsOpen}
+                    product={existingProduct}
                 />
                 <Box
                     sx={{
@@ -81,6 +89,10 @@ export default function Management() {
                                             id: product._id,
                                             accessToken,
                                         });
+                                }}
+                                onEditCardClick={() => {
+                                    setExistingProduct(product);
+                                    setEditorIsOpen(true);
                                 }}
                             />
                         ))}

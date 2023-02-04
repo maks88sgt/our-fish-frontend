@@ -12,7 +12,6 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 
 export const ProductCard = ({
-    id,
     name,
     description,
     price,
@@ -66,7 +65,9 @@ export const ProductCard = ({
             <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
                 {isModeratorView ? (
                     <>
-                        <IconButton>
+                        <IconButton
+                            onClick={() => onEditCardClick && onEditCardClick()}
+                        >
                             <EditIcon />
                         </IconButton>
                         <IconButton

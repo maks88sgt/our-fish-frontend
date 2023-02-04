@@ -14,8 +14,11 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import { Dispatch, useState } from 'react';
-import { useCreateProductMutation } from '../store/products/productsApi';
+import { Dispatch, useEffect, useState } from 'react';
+import {
+    useCreateProductMutation,
+    useUpdateProductMutation,
+} from '../store/products/productsApi';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import CloseIcon from '@mui/icons-material/Close';
@@ -23,9 +26,11 @@ import CloseIcon from '@mui/icons-material/Close';
 export const ProductEditor = ({
     editorIsOpen,
     setEditorIsOpen,
+    product,
 }: {
     editorIsOpen: boolean;
     setEditorIsOpen: Dispatch<boolean>;
+    product?: ProductDTO;
 }) => {
     const [productName, setProductName] = useState('');
     const [productPrice, setProductPrice] = useState(0);
@@ -33,6 +38,15 @@ export const ProductEditor = ({
     const [published, setPublished] = useState(false);
     const [units, setUnits] = useState(Units.pack);
     const [category, setCategory] = useState(Categories.frozen);
+
+    useEffect(() => {
+        product?.name && setProductName(product.name);
+        product?.price && setProductPrice(product.price);
+        product?.description && setProductDescription(product.description);
+        product?.published && setPublished(product.published);
+        product?.units && setUnits(product.units);
+        product?.category && setCategory(product.category);
+    }, [product]);
 
     const resetAllData = () => {
         setCategory(Categories.frozen);
@@ -48,6 +62,7 @@ export const ProductEditor = ({
     );
 
     const [createProduct] = useCreateProductMutation();
+    const [updateProduct] = useUpdateProductMutation();
 
     return (
         <Modal
@@ -164,6 +179,12 @@ export const ProductEditor = ({
                                     <MenuItem value={Categories.frozen}>
                                         Замороженная
                                     </MenuItem>
+                                    <MenuItem value={Categories.smoked}>
+                                        Копченая
+                                    </MenuItem>
+                                    <MenuItem value={Categories.dried}>
+                                        Вяленая
+                                    </MenuItem>
                                 </Select>
                             </FormControl>
                         </Box>
@@ -241,18 +262,30 @@ export const ProductEditor = ({
                         variant={'contained'}
                         onClick={() => {
                             seller &&
-                                productName &&
-                                productDescription &&
-                                createProduct({
-                                    name: productName,
-                                    price: productPrice,
-                                    description: productDescription,
-                                    published: published,
-                                    seller: seller,
-                                    category: category,
-                                    units: units,
-                                    accessToken: accessToken ?? '',
-                                });
+                            productName &&
+                            productDescription &&
+                            !product
+                                ? createProduct({
+                                      name: productName,
+                                      price: productPrice,
+                                      description: productDescription,
+                                      published: published,
+                                      seller: seller,
+                                      category: category,
+                                      units: units,
+                                      accessToken: accessToken ?? '',
+                                  })
+                                : updateProduct({
+                                      _id: product._id,
+                                      name: productName,
+                                      price: productPrice,
+                                      description: productDescription,
+                                      published: published,
+                                      seller: seller as string,
+                                      category: category,
+                                      units: units,
+                                      accessToken: accessToken ?? '',
+                                  });
                             resetAllData();
                             setEditorIsOpen(false);
                         }}
@@ -286,4 +319,6 @@ export enum Units {
 export enum Categories {
     frozen = 'frozen',
     cooled = 'cooled',
+    dried = 'dried',
+    smoked = 'smoked',
 }
