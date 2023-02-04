@@ -23,7 +23,12 @@ export const authApi = createApi({
             }),
         }),
         signIn: build.mutation<
-            { accessToken: string; username: string; roles: AvailableRoles[] },
+            {
+                accessToken: string;
+                username: string;
+                roles: AvailableRoles[];
+                seller: string;
+            },
             { username: string; password: string }
         >({
             query: ({ username, password }) => ({

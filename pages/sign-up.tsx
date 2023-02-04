@@ -87,6 +87,7 @@ export default function SignUp() {
                     accessToken: signInResponse.data.accessToken,
                     username: signInResponse.data.username,
                     roles: signInResponse.data.roles,
+                    seller: signInResponse.data.seller,
                 }),
             );
             router.push('/');

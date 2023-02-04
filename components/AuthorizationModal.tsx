@@ -60,6 +60,7 @@ export const AuthorizationModal = ({
                     accessToken: signInResponse.data.accessToken,
                     username: signInResponse.data.username,
                     roles: signInResponse.data.roles,
+                    seller: signInResponse.data.seller,
                 }),
             );
             return;

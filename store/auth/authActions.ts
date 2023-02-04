@@ -2,7 +2,7 @@ import { createAction } from '@reduxjs/toolkit';
 
 export const setUserData = createAction(
     `user/setUserData`,
-    ({ username, accessToken, roles }) => ({
-        payload: { username, accessToken, roles },
+    ({ username, accessToken, roles, seller }) => ({
+        payload: { username, accessToken, roles, seller },
     }),
 );

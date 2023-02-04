@@ -11,12 +11,14 @@ type InitialStateType = {
     username: string | null;
     accessToken: string | null;
     roles: null | AvailableRoles[];
+    seller: string | null;
 };
 
 const initialState: InitialStateType = {
     username: null,
     accessToken: null,
     roles: null,
+    seller: null,
 };
 
 export const authSlice = createSlice({
@@ -28,6 +30,7 @@ export const authSlice = createSlice({
             state.accessToken = action.payload.accessToken;
             state.username = action.payload.username;
             state.roles = action.payload.roles;
+            state.seller = action.payload.seller;
         });
     },
 });
