@@ -85,7 +85,7 @@ export default function SignUp() {
             dispatch(
                 setUserData({
                     accessToken: signInResponse.data.accessToken,
-                    username: signInResponse.data.accessToken,
+                    username: signInResponse.data.username,
                     roles: signInResponse.data.roles,
                 }),
             );

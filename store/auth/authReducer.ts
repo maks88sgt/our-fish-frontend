@@ -1,7 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { setUserData } from './authActions';
 
-export type AvailableRoles = 'ROLE_USER' | 'ROLE_MODERATOR' | 'ROLE_ADMIN';
+export enum AvailableRoles {
+    user = 'user',
+    admin = 'admin',
+    moderator = 'moderator',
+}
 
 type InitialStateType = {
     username: string | null;
@@ -9,7 +13,7 @@ type InitialStateType = {
     roles: null | AvailableRoles[];
 };
 
-const initialState = {
+const initialState: InitialStateType = {
     username: null,
     accessToken: null,
     roles: null,

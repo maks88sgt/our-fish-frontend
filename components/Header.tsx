@@ -1,4 +1,4 @@
-import { MouseEvent, useState } from 'react';
+import { Dispatch, MouseEvent, useState } from 'react';
 
 import MenuIcon from '@mui/icons-material/Menu';
 import LoginIcon from '@mui/icons-material/Login';
@@ -24,6 +24,7 @@ import { AuthorizationModal } from './AuthorizationModal';
 import { RootState } from '../store/store';
 import { useSelector } from 'react-redux';
 import { stringAvatar } from '../utils/stringAvatar';
+import { UserAvatar } from './UserAvatar';
 
 const enum Paths {
     index = '/',
@@ -59,35 +60,37 @@ export const Header = () => {
                 justifyContent: 'space-between',
             }}
         >
-            <Image src={logo} width={150} height={55} alt={'logo'} />
             {matches ? (
-                <Tabs
-                    textColor={'primary'}
-                    indicatorColor={'secondary'}
-                    value={pathMap[asPath as Paths]}
-                >
-                    <Link href={'/'}>
-                        <Tab label="Магазин" value={0} />
-                    </Link>
-                    <Link href={'/cart'}>
-                        <Tab label="Корзина" value={1} />
-                    </Link>
-                    <Link href={'/info'}>
-                        <Tab label="О нас" value={2} />
-                    </Link>
-                    {!username ? (
-                        <IconButton onClick={() => setModalIsOpen(true)}>
-                            <LoginIcon
-                                fontSize={'large'}
-                                sx={{ color: 'white' }}
-                            />
-                        </IconButton>
-                    ) : (
-                        <Avatar {...stringAvatar(username)} />
-                    )}
-                </Tabs>
+                <>
+                    <Image src={logo} width={150} height={55} alt={'logo'} />
+                    <Tabs
+                        textColor={'primary'}
+                        indicatorColor={'secondary'}
+                        value={pathMap[asPath as Paths]}
+                    >
+                        <Link href={'/'}>
+                            <Tab label="Магазин" value={0} />
+                        </Link>
+                        <Link href={'/cart'}>
+                            <Tab label="Корзина" value={1} />
+                        </Link>
+                        <Link href={'/info'}>
+                            <Tab label="О нас" value={2} />
+                        </Link>
+                        {!username ? (
+                            <IconButton onClick={() => setModalIsOpen(true)}>
+                                <LoginIcon
+                                    fontSize={'large'}
+                                    sx={{ color: 'white' }}
+                                />
+                            </IconButton>
+                        ) : (
+                            <UserAvatar username={username} />
+                        )}
+                    </Tabs>
+                </>
             ) : (
-                <MobileHeader />
+                <MobileHeader setModalIsOpen={setModalIsOpen} />
             )}
             <AuthorizationModal
                 setModalIsOpen={setModalIsOpen}
@@ -97,30 +100,39 @@ export const Header = () => {
     );
 };
 
-const MobileHeader = () => {
+const MobileHeader = ({
+    setModalIsOpen,
+}: {
+    setModalIsOpen: Dispatch<boolean>;
+}) => {
     const [menuIsOpen, setMenuIsOpen] = useState<null | HTMLElement>(null);
 
-    console.log(menuIsOpen);
+    const { username, roles } = useSelector((state: RootState) => {
+        return state.auth;
+    });
 
     return (
-        <Box>
+        <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                width: '100%',
+            }}
+        >
+            <Image src={logo} width={50} height={25} alt={'logo'} />
             <IconButton
                 edge="start"
                 color="inherit"
                 aria-label="menu"
-                sx={{ mr: 2 }}
                 onClick={(ev: MouseEvent<HTMLButtonElement>) => {
                     setMenuIsOpen(ev.currentTarget);
                 }}
             >
                 <MenuIcon fontSize={'large'} />
             </IconButton>
-            <IconButton
-                edge="start"
-                color="inherit"
-                aria-label="menu"
-                sx={{ mr: 2 }}
-            >
+            <IconButton edge="start" color="inherit" aria-label="menu">
                 <Link href={'/cart'}>
                     <ShoppingCartIcon fontSize={'large'} />
                 </Link>
@@ -141,7 +153,18 @@ const MobileHeader = () => {
                 <MenuItem>
                     <Link href={'/info'}>О нас</Link>
                 </MenuItem>
+                {!username ? (
+                    <>
+                        <Divider />
+                        <MenuItem>
+                            <Box onClick={() => setModalIsOpen(true)}>
+                                Войти
+                            </Box>
+                        </MenuItem>
+                    </>
+                ) : null}
             </Menu>
+            {username ? <UserAvatar username={username} /> : null}
         </Box>
     );
 };
