@@ -39,7 +39,8 @@ export const productsApi = createApi({
             query: ({
                 name,
                 price,
-                categories,
+                units,
+                category,
                 properties,
                 seller,
                 description,
@@ -50,7 +51,8 @@ export const productsApi = createApi({
                 body: {
                     name,
                     price,
-                    categories,
+                    units,
+                    category,
                     properties,
                     seller,
                     description,

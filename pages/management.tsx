@@ -6,15 +6,18 @@ import { RootState } from '../store/store';
 import { useSelector } from 'react-redux';
 import { AvailableRoles } from '../store/auth/authReducer';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
     useGetAllProductsBySellerQuery,
     useGetAllPublishedProductsQuery,
 } from '../store/products/productsApi';
 import { Box } from '@mui/system';
 import { ProductEditor } from '../components/ProductEditor';
+import { Button } from '@mui/material';
 
 export default function Management() {
+    const [editorIsOpen, setEditorIsOpen] = useState(false);
+
     const { roles, seller, accessToken } = useSelector(
         (state: RootState) => state.auth,
     );
@@ -34,8 +37,6 @@ export default function Management() {
         { skip: !seller },
     );
 
-    console.log('>>>>>>>>>>>>>>>>>>>>>>', data);
-
     return (
         <div className={styles.container}>
             <Head>
@@ -45,7 +46,16 @@ export default function Management() {
 
             <main className={styles.main}>
                 <Header />
-                <ProductEditor />
+                <Button
+                    variant={'contained'}
+                    onClick={() => setEditorIsOpen(true)}
+                >
+                    Добавить новый продукт
+                </Button>
+                <ProductEditor
+                    editorIsOpen={editorIsOpen}
+                    setEditorIsOpen={setEditorIsOpen}
+                />
             </main>
         </div>
     );
