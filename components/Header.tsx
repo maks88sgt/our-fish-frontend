@@ -25,6 +25,7 @@ import { RootState } from '../store/store';
 import { useSelector } from 'react-redux';
 import { stringAvatar } from '../utils/stringAvatar';
 import { UserAvatar } from './UserAvatar';
+import { AvailableRoles } from '../store/auth/authReducer';
 
 const enum Paths {
     index = '/',
@@ -49,6 +50,8 @@ export const Header = () => {
         return state.auth;
     });
 
+    const isModerator = roles?.some((it) => it === AvailableRoles.moderator);
+
     return (
         <AppBar
             position="sticky"
@@ -66,17 +69,33 @@ export const Header = () => {
                     <Tabs
                         textColor={'primary'}
                         indicatorColor={'secondary'}
-                        value={pathMap[asPath as Paths]}
+                        value={isModerator ? '' : pathMap[asPath as Paths]}
                     >
-                        <Link href={'/'}>
-                            <Tab label="Магазин" value={0} />
-                        </Link>
-                        <Link href={'/cart'}>
-                            <Tab label="Корзина" value={1} />
-                        </Link>
-                        <Link href={'/info'}>
-                            <Tab label="О нас" value={2} />
-                        </Link>
+                        {isModerator ? (
+                            <>
+                                <Link href={'/'}>
+                                    <Tab label="Магазин" value={0} />
+                                </Link>
+                                <Link href={'/management'}>
+                                    <Tab
+                                        label="Управление товарами"
+                                        value={1}
+                                    />
+                                </Link>
+                            </>
+                        ) : (
+                            <>
+                                <Link href={'/'}>
+                                    <Tab label="Магазин" value={0} />
+                                </Link>
+                                <Link href={'/cart'}>
+                                    <Tab label="Корзина" value={1} />
+                                </Link>
+                                <Link href={'/info'}>
+                                    <Tab label="О нас" value={2} />
+                                </Link>
+                            </>
+                        )}
                         {!username ? (
                             <IconButton onClick={() => setModalIsOpen(true)}>
                                 <LoginIcon
