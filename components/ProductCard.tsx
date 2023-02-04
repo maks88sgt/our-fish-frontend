@@ -1,7 +1,8 @@
 import { Button, Card, CardActions, CardContent, CardHeader, CardMedia } from '@mui/material';
 import { Box, useTheme } from '@mui/system';
+import { Product } from '../pages';
 
-export const ProductCard = () => {
+export const ProductCard = ({ id, name, description, price, features, categories }: Product) => {
     const theme = useTheme();
     return <Card sx={{ width: 300, height: 400 }}>
         <Box sx={{ padding: '21px' }}>

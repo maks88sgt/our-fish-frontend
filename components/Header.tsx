@@ -10,8 +10,6 @@ import { useRouter } from 'next/router';
 
 import logo from '../assets/logo.svg';
 
-
-
 const enum Paths {
     index = '/',
     cart = '/cart',
@@ -34,7 +32,6 @@ export const Header = () => {
         alignItems: 'center',
         padding: 4,
         justifyContent: 'space-between',
-        //backgroundColor: theme.palette.primary.main,
 
     }}
     >
