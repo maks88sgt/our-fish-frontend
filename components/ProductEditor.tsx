@@ -22,6 +22,9 @@ import {
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import CloseIcon from '@mui/icons-material/Close';
+import { Categories, ProductDTO, Units } from '../types/types';
+import { getCategory } from '../utils/getCategory';
+import { getUnits } from '../utils/getUnits';
 
 export const ProductEditor = ({
     editorIsOpen,
@@ -174,16 +177,16 @@ export const ProductEditor = ({
                                     }
                                 >
                                     <MenuItem value={Categories.cooled}>
-                                        Охлажденная
+                                        {getCategory(Categories.cooled)}
                                     </MenuItem>
                                     <MenuItem value={Categories.frozen}>
-                                        Замороженная
+                                        {getCategory(Categories.frozen)}
                                     </MenuItem>
                                     <MenuItem value={Categories.smoked}>
-                                        Копченая
+                                        {getCategory(Categories.smoked)}
                                     </MenuItem>
                                     <MenuItem value={Categories.dried}>
-                                        Вяленая
+                                        {getCategory(Categories.dried)}
                                     </MenuItem>
                                 </Select>
                             </FormControl>
@@ -229,9 +232,15 @@ export const ProductEditor = ({
                                         setUnits(event.target.value as Units)
                                     }
                                 >
-                                    <MenuItem value={Units.piece}>Шт.</MenuItem>
-                                    <MenuItem value={Units.kg}>Кг.</MenuItem>
-                                    <MenuItem value={Units.pack}>Уп.</MenuItem>
+                                    <MenuItem value={Units.piece}>
+                                        {getUnits(Units.piece)}
+                                    </MenuItem>
+                                    <MenuItem value={Units.kg}>
+                                        {getUnits(Units.kg)}
+                                    </MenuItem>
+                                    <MenuItem value={Units.pack}>
+                                        {getUnits(Units.pack)}
+                                    </MenuItem>
                                 </Select>
                             </FormControl>
                         </Box>
@@ -276,7 +285,7 @@ export const ProductEditor = ({
                                       accessToken: accessToken ?? '',
                                   })
                                 : updateProduct({
-                                      _id: product._id,
+                                      _id: product?._id,
                                       name: productName,
                                       price: productPrice,
                                       description: productDescription,
@@ -297,28 +306,3 @@ export const ProductEditor = ({
         </Modal>
     );
 };
-
-export type ProductDTO = {
-    _id: string;
-    name: string;
-    price: number;
-    units: Units;
-    category: Categories;
-    properties: string[];
-    seller: string;
-    description: string;
-    published: boolean;
-};
-
-export enum Units {
-    kg = 'kg',
-    pack = 'pack',
-    piece = 'piece',
-}
-
-export enum Categories {
-    frozen = 'frozen',
-    cooled = 'cooled',
-    dried = 'dried',
-    smoked = 'smoked',
-}

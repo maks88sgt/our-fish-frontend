@@ -7,15 +7,18 @@ import {
     IconButton,
 } from '@mui/material';
 import { Box, useTheme } from '@mui/system';
-import { ProductDTO } from './ProductEditor';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
+import { ProductDTO } from '../types/types';
+import { getUnits } from '../utils/getUnits';
+import { getCategory } from '../utils/getCategory';
 
 export const ProductCard = ({
     name,
     description,
     price,
     category,
+    image,
     units,
     published,
     isModeratorView,
@@ -35,7 +38,7 @@ export const ProductCard = ({
                 <CardMedia
                     component="img"
                     height="198"
-                    image="/assets/default_image.png"
+                    image={image ? image : '/assets/default_image.png'}
                 />
             </Box>
             <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -49,7 +52,7 @@ export const ProductCard = ({
                     }}
                 >
                     <Box sx={{ fontSize: '18px', color: '#B5B5B5' }}>
-                        {category}
+                        {getCategory(category)}
                     </Box>
                     <Box
                         sx={{
@@ -58,13 +61,19 @@ export const ProductCard = ({
                             color: theme.palette.primary.main,
                         }}
                     >
-                        {price} руб/{units}
+                        {price} руб/{getUnits(units)}
                     </Box>
                 </Box>
             </CardContent>
-            <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
+            <CardActions
+                sx={{
+                    display: 'flex',
+                    justifyContent: isModeratorView ? 'space-around' : 'center',
+                }}
+            >
                 {isModeratorView ? (
                     <>
+                        {published ? 'Опубликован' : 'Черновик'}
                         <IconButton
                             onClick={() => onEditCardClick && onEditCardClick()}
                         >
@@ -85,5 +94,3 @@ export const ProductCard = ({
         </Card>
     );
 };
-
-const card = {};
