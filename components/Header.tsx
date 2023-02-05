@@ -73,31 +73,37 @@ export const Header = () => {
                         indicatorColor={'secondary'}
                         value={isModerator ? '' : pathMap[asPath as Paths]}
                     >
-                        {isModerator ? (
-                            <>
-                                <Link href={'/'}>
-                                    <Tab label="Магазин" value={0} />
-                                </Link>
-                                <Link href={'/management'}>
-                                    <Tab
-                                        label="Управление товарами"
-                                        value={3}
-                                    />
-                                </Link>
-                            </>
-                        ) : (
-                            <>
-                                <Link href={'/'}>
-                                    <Tab label="Магазин" value={0} />
-                                </Link>
-                                <Link href={'/cart'}>
-                                    <Tab label="Корзина" value={1} />
-                                </Link>
-                                <Link href={'/info'}>
-                                    <Tab label="О нас" value={2} />
-                                </Link>
-                            </>
-                        )}
+                        {isModerator
+                            ? [
+                                  { href: '/', label: 'Магазин' },
+                                  {
+                                      href: '/management',
+                                      label: 'Управление товарами',
+                                  },
+                              ].map((item, index) => {
+                                  return (
+                                      <Link key={item.label} href={item.href}>
+                                          <Tab
+                                              label={item.label}
+                                              value={index}
+                                          />
+                                      </Link>
+                                  );
+                              })
+                            : [
+                                  { href: '/', label: 'Магазин' },
+                                  { href: '/cart', label: 'Корзина' },
+                                  { href: '/info', label: 'О проекте' },
+                              ].map((item, index) => {
+                                  return (
+                                      <Link key={item.label} href={item.href}>
+                                          <Tab
+                                              label={item.label}
+                                              value={index}
+                                          />
+                                      </Link>
+                                  );
+                              })}
                         {!username ? (
                             <IconButton onClick={() => setModalIsOpen(true)}>
                                 <LoginIcon

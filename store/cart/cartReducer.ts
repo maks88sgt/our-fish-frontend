@@ -3,15 +3,24 @@ import {
     addProductToCart,
     decreaseProductQuantity,
     increaseProductQuantity,
+    setSavedCart,
 } from './cartActions';
 import { ProductDTO } from '../../types/types';
 
 type InitialStateType = {
     products: (ProductDTO & { quantity: number })[];
+    savedCart: {
+        products: (ProductDTO & { quantity: number })[];
+        cartId: string | null;
+    };
 };
 
 const initialState: InitialStateType = {
     products: [],
+    savedCart: {
+        products: [],
+        cartId: null,
+    },
 };
 
 export const cartSlice = createSlice({
@@ -33,6 +42,9 @@ export const cartSlice = createSlice({
                 ...state.products[index],
                 quantity: state.products[index].quantity + 1,
             };
+        });
+        builder.addCase(setSavedCart, (state, action) => {
+            state.savedCart = action.payload;
         });
         builder.addCase(decreaseProductQuantity, (state, action) => {
             const index = state.products.findIndex(

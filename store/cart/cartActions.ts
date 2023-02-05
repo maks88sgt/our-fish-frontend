@@ -21,3 +21,10 @@ export const decreaseProductQuantity = createAction(
         payload: { product },
     }),
 );
+
+export const setSavedCart = createAction(
+    `cart/setSavedCart`,
+    (products: (ProductDTO & { quantity: number })[], cartId) => ({
+        payload: { products, cartId },
+    }),
+);
