@@ -6,9 +6,17 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useUpdateCartMutation } from '../store/cart/cartApi';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../store/store';
+import { useRouter } from 'next/router';
+import { clearCart, setSavedCart } from '../store/cart/cartActions';
 
 export const PurchaseForm = () => {
+    const { products, savedCart } = useSelector(
+        (state: RootState) => state.cart,
+    );
     const [purchaseUsername, setPurchaseUsername] = useState('');
     const [purchaseUsernameError, setPurchaseUsernameError] = useState('');
     const validateName = () => {
@@ -26,12 +34,12 @@ export const PurchaseForm = () => {
     const [purchasePhoneError, setPurchasePhoneError] = useState('');
     const validatePhone = () => {
         if (
-            purchaseUsername.length !== 9 ||
-            purchaseUsername[0] !== '+' ||
-            purchaseUsername[1] !== '7'
+            purchasePhone.length !== 12 ||
+            purchasePhone[0] !== '+' ||
+            purchasePhone[1] !== '7'
         ) {
             setPurchasePhoneError(
-                'Номер должен начинаться с +7 и содержать 9 знаков',
+                'Номер должен начинаться с +7 и содержать 12 знаков',
             );
         }
     };
@@ -80,6 +88,18 @@ export const PurchaseForm = () => {
     };
     const [purchaseApartments, setPurchaseApartments] = useState('');
     const [purchaseComment, setPurchaseComment] = useState('');
+
+    const [purchaseCart, purchaseCartResponse] = useUpdateCartMutation();
+
+    const router = useRouter();
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (purchaseCartResponse.isSuccess) {
+            router.push('/purchase-success');
+            dispatch(clearCart());
+        }
+    }, [purchaseCartResponse]);
 
     return (
         <Box
@@ -132,7 +152,7 @@ export const PurchaseForm = () => {
                     helperText={purchaseEmailError}
                     onFocus={() => setPurchaseEmailError('')}
                 />
-                <FormControlLabel
+                {/*<FormControlLabel
                     control={
                         <Checkbox
                             checked={saveUserData}
@@ -140,7 +160,7 @@ export const PurchaseForm = () => {
                         />
                     }
                     label="Сохранить данные для последующих заказов"
-                />
+                />*/}
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                 <Typography fontSize={'24px'} fontWeight={400}>
@@ -250,6 +270,25 @@ export const PurchaseForm = () => {
                                 purchaseHouseError
                             ) {
                                 return;
+                            }
+                            if (savedCart.cartId) {
+                                purchaseCart({
+                                    cartId: savedCart.cartId,
+                                    products,
+                                    shippingAddress: {
+                                        city: purchaseCity,
+                                        street: purchaseStreet,
+                                        house: purchaseHouse,
+                                        entrance: purchaseEntrance,
+                                        apartment: purchaseApartments,
+                                    },
+                                    comment: purchaseComment,
+                                    contactInfo: {
+                                        name: purchaseUsername,
+                                        email: purchaseEmail,
+                                        phone: purchasePhone,
+                                    },
+                                });
                             }
                         }}
                     >

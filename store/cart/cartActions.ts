@@ -8,6 +8,8 @@ export const addProductToCart = createAction(
     }),
 );
 
+export const clearCart = createAction(`cart/clearCart`);
+
 export const increaseProductQuantity = createAction(
     `cart/increaseProductQuantity`,
     (product: ProductDTO) => ({

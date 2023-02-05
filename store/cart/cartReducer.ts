@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
     addProductToCart,
+    clearCart,
     decreaseProductQuantity,
     increaseProductQuantity,
     setSavedCart,
@@ -42,6 +43,10 @@ export const cartSlice = createSlice({
                 ...state.products[index],
                 quantity: state.products[index].quantity + 1,
             };
+        });
+        builder.addCase(clearCart, (state) => {
+            state.products = initialState.products;
+            state.savedCart = initialState.savedCart;
         });
         builder.addCase(setSavedCart, (state, action) => {
             state.savedCart = action.payload;

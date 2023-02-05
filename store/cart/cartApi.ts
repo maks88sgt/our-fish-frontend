@@ -23,7 +23,49 @@ export const cartApi = createApi({
                 method: 'POST',
             }),
         }),
+        updateCart: build.mutation<
+            {
+                products: (ProductDTO & { quantity: number })[];
+                _id: string;
+                status: string;
+            },
+            {
+                cartId: string;
+                products: (ProductDTO & { quantity: number })[];
+                comment: string;
+                contactInfo: {
+                    name: string;
+                    email: string;
+                    phone: string;
+                };
+                shippingAddress: {
+                    city: string;
+                    street: string;
+                    house: string;
+                    entrance: string;
+                    apartment: string;
+                };
+            }
+        >({
+            query: ({
+                products,
+                comment,
+                contactInfo,
+                shippingAddress,
+                cartId,
+            }) => ({
+                url: `/${cartId}`,
+                body: {
+                    products,
+                    comment,
+                    contactInfo,
+                    shippingAddress,
+                    status: 'Purchased',
+                },
+                method: 'put',
+            }),
+        }),
     }),
 });
 
-export const { useCreateCartMutation } = cartApi;
+export const { useCreateCartMutation, useUpdateCartMutation } = cartApi;
