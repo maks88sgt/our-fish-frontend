@@ -27,7 +27,7 @@ export const ProductCard = ({
     onDeleteCardClick,
 }: ProductDTO & {
     isModeratorView?: boolean;
-    onAddToCartClick?: () => void;
+    onAddToCartClick?: (ev: any) => void;
     onEditCardClick?: () => void;
     onDeleteCardClick?: () => void;
 }) => {
@@ -88,7 +88,9 @@ export const ProductCard = ({
                         </IconButton>
                     </>
                 ) : (
-                    <Button variant={'contained'}>В корзину</Button>
+                    <Button variant={'contained'} onClick={onAddToCartClick}>
+                        В корзину
+                    </Button>
                 )}
             </CardActions>
         </Card>

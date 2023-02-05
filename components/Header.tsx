@@ -31,12 +31,14 @@ const enum Paths {
     index = '/',
     cart = '/cart',
     info = '/info',
+    management = '/management',
 }
 
 const pathMap = {
     [Paths.index]: 0,
     [Paths.cart]: 1,
     [Paths.info]: 2,
+    [Paths.management]: 3,
 };
 
 export const Header = () => {
@@ -79,7 +81,7 @@ export const Header = () => {
                                 <Link href={'/management'}>
                                     <Tab
                                         label="Управление товарами"
-                                        value={1}
+                                        value={3}
                                     />
                                 </Link>
                             </>
