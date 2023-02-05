@@ -9,9 +9,10 @@ import { getCategory } from '../../utils/getCategory';
 import { getUnits } from '../../utils/getUnits';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { AvailableRoles } from '../../store/auth/authReducer';
+import { addProductToCart } from '../../store/cart/cartActions';
 
 export default function Product({ product }: { product: ProductDTO }) {
     const router = useRouter();
@@ -19,6 +20,8 @@ export default function Product({ product }: { product: ProductDTO }) {
     const { roles } = useSelector((state: RootState) => state.auth);
 
     const isModerator = roles?.some((it) => it === AvailableRoles.moderator);
+
+    const dispatch = useDispatch();
 
     return (
         <Box>
@@ -134,7 +137,7 @@ export default function Product({ product }: { product: ProductDTO }) {
                                 <Button
                                     variant={'contained'}
                                     onClick={() => {
-                                        console.log('click');
+                                        dispatch(addProductToCart(product));
                                     }}
                                 >
                                     Добавить в корзину

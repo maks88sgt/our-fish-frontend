@@ -2,9 +2,11 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { authApi } from './auth/authApi';
 import { authSlice } from './auth/authReducer';
 import { productsApi } from './products/productsApi';
+import { cartSlice } from './cart/cartReducer';
 
 const reducer = combineReducers({
     auth: authSlice.reducer,
+    cart: cartSlice.reducer,
     [authApi.reducerPath]: authApi.reducer,
     [productsApi.reducerPath]: productsApi.reducer,
 });

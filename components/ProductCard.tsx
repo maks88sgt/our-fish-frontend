@@ -28,11 +28,13 @@ export const ProductCard = ({
     onAddToCartClick,
     onEditCardClick,
     onDeleteCardClick,
+    addToCartLabel,
 }: ProductDTO & {
     isModeratorView?: boolean;
     onAddToCartClick?: (ev: any) => void;
     onEditCardClick?: () => void;
     onDeleteCardClick?: () => void;
+    addToCartLabel?: string;
 }) => {
     const theme = useTheme();
     const { roles } = useSelector((state: RootState) => state.auth);
@@ -94,8 +96,11 @@ export const ProductCard = ({
                         </IconButton>
                     </>
                 ) : isModerator ? null : (
-                    <Button variant={'contained'} onClick={onAddToCartClick}>
-                        В корзину
+                    <Button
+                        variant={addToCartLabel ? 'outlined' : 'contained'}
+                        onClick={onAddToCartClick}
+                    >
+                        {addToCartLabel ? addToCartLabel : 'Добавить в корзину'}
                     </Button>
                 )}
             </CardActions>
