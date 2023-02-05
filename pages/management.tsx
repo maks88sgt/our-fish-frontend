@@ -10,12 +10,12 @@ import { useEffect, useState } from 'react';
 import {
     useDeleteProductMutation,
     useGetAllProductsBySellerQuery,
-    useGetAllPublishedProductsQuery,
 } from '../store/products/productsApi';
 import { Box } from '@mui/system';
-import { ProductDTO, ProductEditor } from '../components/ProductEditor';
+import { ProductEditor } from '../components/ProductEditor';
 import { Button } from '@mui/material';
 import { ProductCard } from '../components/ProductCard';
+import { ProductDTO } from '../types/types';
 
 export default function Management() {
     const [editorIsOpen, setEditorIsOpen] = useState(false);
@@ -40,8 +40,6 @@ export default function Management() {
     );
 
     const [deleteProduct] = useDeleteProductMutation();
-
-    console.log('>>>>>>>>>>>>>>>>>>', data);
 
     const [existingProduct, setExistingProduct] = useState<
         ProductDTO | undefined

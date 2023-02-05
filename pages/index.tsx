@@ -6,10 +6,11 @@ import styles from '../styles/Home.module.css';
 import { ProductGrid } from '../components/ProductGrid';
 import { Footer } from '../components/Footer';
 import { Box } from '@mui/system';
-import { ProductDTO } from '../components/ProductEditor';
+
+import { ProductDTO } from '../types/types';
 
 type IndexPageProps = {
-    productsList: any[];
+    productsList: ProductDTO[];
 };
 
 export default function Index({ productsList }: IndexPageProps) {
@@ -30,30 +31,15 @@ export default function Index({ productsList }: IndexPageProps) {
     );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
+    const products = await fetch(
+        'http://localhost:8080/api/products/published',
+    ).then((response) => {
+        if (response.status === 200) {
+            return response.json();
+        }
+    });
     return {
-        props: { productsList: [] },
+        props: { productsList: products },
     };
 }
-
-export type IndexPageDataType = GeneralPaginatedResponseType<ProductDTO[]>;
-
-export type GeneralResponseType<T, S = void> = {
-    message: string | null;
-    data: T;
-    extraData: S;
-};
-
-export type GeneralPaginatedResponseType<T, S = void> = GeneralResponseType<
-    T,
-    S
-> & {
-    pagination: PaginationResponse;
-};
-
-export type PaginationResponse = {
-    page: number;
-    hasMore: boolean;
-    totalItems: number;
-    totalPages: number;
-};
