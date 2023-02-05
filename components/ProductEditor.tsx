@@ -99,7 +99,7 @@ export const ProductEditor = ({
                 >
                     <CloseIcon />
                 </IconButton>
-                <Typography>Добавление нового товара</Typography>
+                <Typography variant="h3">Добавление нового товара</Typography>
                 <Box
                     sx={{
                         padding: '32px',

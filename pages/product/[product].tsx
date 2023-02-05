@@ -1,10 +1,27 @@
 import Head from 'next/head';
 
 import { Box } from '@mui/system';
-import { ProductDTO } from '../../types/types';
+import { Categories, ProductDTO, Units } from '../../types/types';
 import { Banner } from '../../components/Banner';
 import { Header } from '../../components/Header';
 import { Footer } from '../../components/Footer';
+import {
+    Button,
+    CardMedia,
+    Checkbox,
+    FormControl,
+    FormControlLabel,
+    IconButton,
+    InputLabel,
+    MenuItem,
+    Paper,
+    Select,
+    TextField,
+    Typography,
+} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import { getCategory } from '../../utils/getCategory';
+import { getUnits } from '../../utils/getUnits';
 
 export default function Product({ product }: { product: ProductDTO }) {
     return (
@@ -17,8 +34,116 @@ export default function Product({ product }: { product: ProductDTO }) {
             <main>
                 <>
                     <Header />
-                    <Banner />
-                    {JSON.stringify(product)}
+                    <Paper
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'space-around',
+                            padding: '24px',
+                            backgroundColor: 'white',
+                            position: 'relative',
+                        }}
+                    >
+                        <Typography variant="h1">{product.name}</Typography>
+                        <Box
+                            sx={{
+                                padding: '32px',
+                                display: 'grid',
+                                gridTemplateColumns: '1fr 3fr',
+                                gap: '16px',
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    height: '100%',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <CardMedia
+                                    component="img"
+                                    height="250"
+                                    width={'250'}
+                                    image={product.image ?? ''}
+                                />
+                            </Box>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    gap: '24px',
+                                }}
+                            >
+                                <Box
+                                    sx={{
+                                        width: '100%',
+                                        display: 'grid',
+                                        gridTemplateColumns: '20% 80%',
+                                        gap: '24px',
+                                    }}
+                                >
+                                    <Typography fontWeight={600}>
+                                        Категория товара:{' '}
+                                    </Typography>
+                                    {getCategory(product.category)}
+                                </Box>
+                                <Box
+                                    sx={{
+                                        width: '100%',
+                                        display: 'grid',
+                                        gridTemplateColumns: '20% 80%',
+                                        gap: '24px',
+                                    }}
+                                >
+                                    <Typography fontWeight={600}>
+                                        Описание:{' '}
+                                    </Typography>
+                                    {product.description}
+                                </Box>
+                                <Box
+                                    sx={{
+                                        width: '100%',
+                                        display: 'grid',
+                                        gridTemplateColumns: '20% 80%',
+                                        gap: '24px',
+                                    }}
+                                >
+                                    <Typography fontWeight={600}>
+                                        Цена:{' '}
+                                    </Typography>
+                                    {product.price} руб/
+                                    {getUnits(product.units)}
+                                </Box>
+                            </Box>
+                        </Box>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                gap: '24px',
+                            }}
+                        >
+                            <Button
+                                variant={'outlined'}
+                                onClick={() => {
+                                    console.log('click');
+                                }}
+                            >
+                                Вернуться к списку товаров
+                            </Button>
+                            <Button
+                                variant={'contained'}
+                                onClick={() => {
+                                    console.log('click');
+                                }}
+                            >
+                                Добавить в корзину
+                            </Button>
+                        </Box>
+                    </Paper>
                 </>
             </main>
             <Footer />
