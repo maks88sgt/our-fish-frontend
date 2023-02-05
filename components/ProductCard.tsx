@@ -12,6 +12,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import { ProductDTO } from '../types/types';
 import { getUnits } from '../utils/getUnits';
 import { getCategory } from '../utils/getCategory';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
+import { AvailableRoles } from '../store/auth/authReducer';
 
 export const ProductCard = ({
     name,
@@ -32,6 +35,9 @@ export const ProductCard = ({
     onDeleteCardClick?: () => void;
 }) => {
     const theme = useTheme();
+    const { roles } = useSelector((state: RootState) => state.auth);
+
+    const isModerator = roles?.some((it) => it === AvailableRoles.moderator);
     return (
         <Card sx={{ width: 300, height: 400 }}>
             <Box sx={{ padding: '21px' }}>
@@ -87,7 +93,7 @@ export const ProductCard = ({
                             <DeleteForeverIcon />
                         </IconButton>
                     </>
-                ) : (
+                ) : isModerator ? null : (
                     <Button variant={'contained'} onClick={onAddToCartClick}>
                         В корзину
                     </Button>

@@ -1,29 +1,25 @@
 import Head from 'next/head';
 
 import { Box } from '@mui/system';
-import { Categories, ProductDTO, Units } from '../../types/types';
-import { Banner } from '../../components/Banner';
+import { ProductDTO } from '../../types/types';
 import { Header } from '../../components/Header';
 import { Footer } from '../../components/Footer';
-import {
-    Button,
-    CardMedia,
-    Checkbox,
-    FormControl,
-    FormControlLabel,
-    IconButton,
-    InputLabel,
-    MenuItem,
-    Paper,
-    Select,
-    TextField,
-    Typography,
-} from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+import { Button, CardMedia, Paper, Typography } from '@mui/material';
 import { getCategory } from '../../utils/getCategory';
 import { getUnits } from '../../utils/getUnits';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import { AvailableRoles } from '../../store/auth/authReducer';
 
 export default function Product({ product }: { product: ProductDTO }) {
+    const router = useRouter();
+
+    const { roles } = useSelector((state: RootState) => state.auth);
+
+    const isModerator = roles?.some((it) => it === AvailableRoles.moderator);
+
     return (
         <Box>
             <Head>
@@ -129,19 +125,21 @@ export default function Product({ product }: { product: ProductDTO }) {
                             <Button
                                 variant={'outlined'}
                                 onClick={() => {
-                                    console.log('click');
+                                    router.push('/');
                                 }}
                             >
                                 Вернуться к списку товаров
                             </Button>
-                            <Button
-                                variant={'contained'}
-                                onClick={() => {
-                                    console.log('click');
-                                }}
-                            >
-                                Добавить в корзину
-                            </Button>
+                            {isModerator ? null : (
+                                <Button
+                                    variant={'contained'}
+                                    onClick={() => {
+                                        console.log('click');
+                                    }}
+                                >
+                                    Добавить в корзину
+                                </Button>
+                            )}
                         </Box>
                     </Paper>
                 </>

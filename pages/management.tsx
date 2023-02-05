@@ -70,8 +70,11 @@ export default function Management() {
                 />
                 <Box
                     sx={{
-                        display: 'grid',
-                        gridTemplateColumns: '1fr 1fr 1fr',
+                        width: '100%',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        flexWrap: 'wrap',
                         gap: '24px',
                     }}
                 >
