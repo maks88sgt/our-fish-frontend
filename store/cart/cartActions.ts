@@ -7,3 +7,17 @@ export const addProductToCart = createAction(
         payload: { product },
     }),
 );
+
+export const increaseProductQuantity = createAction(
+    `cart/increaseProductQuantity`,
+    (product: ProductDTO) => ({
+        payload: { product },
+    }),
+);
+
+export const decreaseProductQuantity = createAction(
+    `cart/decreaseProductQuantity`,
+    (product: ProductDTO) => ({
+        payload: { product },
+    }),
+);

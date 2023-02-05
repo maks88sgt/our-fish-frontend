@@ -8,7 +8,6 @@ import { Button, CardMedia, Paper, Typography } from '@mui/material';
 import { getCategory } from '../../utils/getCategory';
 import { getUnits } from '../../utils/getUnits';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { AvailableRoles } from '../../store/auth/authReducer';
@@ -22,6 +21,10 @@ export default function Product({ product }: { product: ProductDTO }) {
     const isModerator = roles?.some((it) => it === AvailableRoles.moderator);
 
     const dispatch = useDispatch();
+
+    const { products } = useSelector((state: RootState) => state.cart);
+
+    const isProductInCart = products.some((it) => it._id === product._id);
 
     return (
         <Box>
@@ -85,7 +88,7 @@ export default function Product({ product }: { product: ProductDTO }) {
                                     }}
                                 >
                                     <Typography fontWeight={600}>
-                                        Категория товара:{' '}
+                                        Категория товара:&nbsp;
                                     </Typography>
                                     {getCategory(product.category)}
                                 </Box>
@@ -98,7 +101,7 @@ export default function Product({ product }: { product: ProductDTO }) {
                                     }}
                                 >
                                     <Typography fontWeight={600}>
-                                        Описание:{' '}
+                                        Описание:&nbsp;
                                     </Typography>
                                     {product.description}
                                 </Box>
@@ -111,7 +114,7 @@ export default function Product({ product }: { product: ProductDTO }) {
                                     }}
                                 >
                                     <Typography fontWeight={600}>
-                                        Цена:{' '}
+                                        Цена:&nbsp;
                                     </Typography>
                                     {product.price} руб/
                                     {getUnits(product.units)}
@@ -135,12 +138,22 @@ export default function Product({ product }: { product: ProductDTO }) {
                             </Button>
                             {isModerator ? null : (
                                 <Button
-                                    variant={'contained'}
+                                    variant={
+                                        isProductInCart
+                                            ? 'outlined'
+                                            : 'contained'
+                                    }
                                     onClick={() => {
-                                        dispatch(addProductToCart(product));
+                                        isProductInCart
+                                            ? router.push('/cart')
+                                            : dispatch(
+                                                  addProductToCart(product),
+                                              );
                                     }}
                                 >
-                                    Добавить в корзину
+                                    {isProductInCart
+                                        ? 'Перейти в корзину'
+                                        : 'Добавить в корзину'}
                                 </Button>
                             )}
                         </Box>
