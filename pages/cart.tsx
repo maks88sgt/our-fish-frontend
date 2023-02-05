@@ -8,6 +8,7 @@ import { Box } from '@mui/system';
 import { CartHeader } from '../components/CartHeader';
 import { CartProductsTable } from '../components/CartProductsTable';
 import { CartSummary } from '../components/CartSummary';
+import { PurchaseForm } from '../components/PurchaseForm';
 
 export default function Cart() {
     const { products } = useSelector((state: RootState) => state.cart);
@@ -25,6 +26,7 @@ export default function Cart() {
                     <CartHeader productsCount={products.length} />
                     <CartProductsTable />
                     <CartSummary />
+                    <PurchaseForm />
                 </Box>
             </main>
         </div>
