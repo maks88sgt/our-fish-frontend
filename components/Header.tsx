@@ -5,7 +5,6 @@ import LoginIcon from '@mui/icons-material/Login';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import {
     AppBar,
-    Avatar,
     Divider,
     IconButton,
     Menu,
@@ -23,7 +22,6 @@ import logo from '../assets/logo.svg';
 import { AuthorizationModal } from './AuthorizationModal';
 import { RootState } from '../store/store';
 import { useSelector } from 'react-redux';
-import { stringAvatar } from '../utils/stringAvatar';
 import { UserAvatar } from './UserAvatar';
 import { AvailableRoles } from '../store/auth/authReducer';
 
@@ -69,7 +67,6 @@ export const Header = () => {
                 <>
                     <Image src={logo} width={150} height={55} alt={'logo'} />
                     <Tabs
-                        textColor={'primary'}
                         indicatorColor={'secondary'}
                         value={isModerator ? '' : pathMap[asPath as Paths]}
                     >
@@ -79,6 +76,10 @@ export const Header = () => {
                                   {
                                       href: '/management',
                                       label: 'Управление товарами',
+                                  },
+                                  {
+                                      href: '/purchases',
+                                      label: 'Заказы',
                                   },
                               ].map((item, index) => {
                                   return (

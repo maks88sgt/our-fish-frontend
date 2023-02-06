@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { ProductDTO } from '../../types/types';
+import { CartDTO, ProductDTO } from '../../types/types';
 
 export const cartApi = createApi({
     reducerPath: 'cartApi',
@@ -8,11 +8,7 @@ export const cartApi = createApi({
     }),
     endpoints: (build) => ({
         createCart: build.mutation<
-            {
-                products: (ProductDTO & { quantity: number })[];
-                _id: string;
-                status: string;
-            },
+            Partial<CartDTO>,
             { products: (ProductDTO & { quantity: number })[] }
         >({
             query: ({ products }) => ({
@@ -23,30 +19,7 @@ export const cartApi = createApi({
                 method: 'POST',
             }),
         }),
-        updateCart: build.mutation<
-            {
-                products: (ProductDTO & { quantity: number })[];
-                _id: string;
-                status: string;
-            },
-            {
-                cartId: string;
-                products: (ProductDTO & { quantity: number })[];
-                comment: string;
-                contactInfo: {
-                    name: string;
-                    email: string;
-                    phone: string;
-                };
-                shippingAddress: {
-                    city: string;
-                    street: string;
-                    house: string;
-                    entrance: string;
-                    apartment: string;
-                };
-            }
-        >({
+        updateCart: build.mutation<CartDTO, CartDTO>({
             query: ({
                 products,
                 comment,
@@ -65,7 +38,21 @@ export const cartApi = createApi({
                 method: 'put',
             }),
         }),
+        getCartsForSeller: build.query<
+            CartDTO[],
+            { seller: string; accessToken: string }
+        >({
+            query: ({ seller, accessToken }) => ({
+                url: `/seller/${seller}`,
+                method: 'GET',
+                headers: { 'x-access-token': accessToken },
+            }),
+        }),
     }),
 });
 
-export const { useCreateCartMutation, useUpdateCartMutation } = cartApi;
+export const {
+    useCreateCartMutation,
+    useUpdateCartMutation,
+    useGetCartsForSellerQuery,
+} = cartApi;

@@ -11,6 +11,25 @@ export type ProductDTO = {
     published: boolean;
 };
 
+export type CartDTO = {
+    cartId: string;
+    products: (ProductDTO & { quantity: number })[];
+    comment: string;
+    contactInfo: {
+        name: string;
+        email: string;
+        phone: string;
+    };
+    shippingAddress: {
+        city: string;
+        street: string;
+        house: string;
+        entrance: string;
+        apartment: string;
+    };
+    status: string;
+};
+
 export enum Units {
     kg = 'kg',
     pack = 'pack',
