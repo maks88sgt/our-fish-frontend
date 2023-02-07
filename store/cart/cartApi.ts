@@ -19,7 +19,7 @@ export const cartApi = createApi({
                 method: 'POST',
             }),
         }),
-        updateCart: build.mutation<CartDTO, CartDTO>({
+        updateCart: build.mutation<CartDTO, Omit<CartDTO, 'status'>>({
             query: ({
                 products,
                 comment,
