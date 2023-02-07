@@ -40,6 +40,6 @@ export async function getServerSideProps() {
         }
     });
     return {
-        props: { productsList: products },
+        props: { productsList: products ?? [] },
     };
 }

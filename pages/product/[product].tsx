@@ -174,12 +174,12 @@ export async function getStaticPaths() {
         }
     });
 
-    const paths = products.map((product: ProductDTO) => ({
+    const paths = products?.map((product: ProductDTO) => ({
         params: { product: product._id },
     }));
 
     return {
-        paths: paths,
+        paths: paths ?? [],
         fallback: false, // can also be true or 'blocking'
     };
 }
@@ -188,11 +188,17 @@ export async function getStaticProps(context: { params: { product: string } }) {
     const { params } = context;
     const fetchedProduct = await fetch(
         `http://localhost:8080/api/products/${params.product}`,
-    ).then((response) => {
-        if (response.status === 200) {
-            return response.json();
-        }
-    });
+    )
+        .then((response) => {
+            if (response.status === 200) {
+                return response.json();
+            }
+        })
+        .catch(() => {
+            return {
+                notFound: true,
+            };
+        });
 
     return {
         props: { product: fetchedProduct },

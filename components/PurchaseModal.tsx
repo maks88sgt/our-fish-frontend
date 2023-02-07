@@ -27,8 +27,17 @@ export const PurchaseModal = ({
     modalIsOpen: boolean;
     setModalIsOpen: Dispatch<boolean>;
 }) => {
-    const { products, contactInfo, shippingAddress, status } =
-        modalData as CartDTO;
+    const { products, contactInfo, shippingAddress } = modalData ?? {
+        products: [],
+        contactInfo: { name: '', email: '', phone: '' },
+        shippingAddress: {
+            city: '',
+            apartment: '',
+            entrance: '',
+            house: '',
+            street: '',
+        },
+    };
 
     return (
         <Modal
