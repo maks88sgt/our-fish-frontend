@@ -17,7 +17,7 @@ export const authApi = createApi({
                     username,
                     password,
                     email,
-                    roles: [AvailableRoles.user],
+                    roles: [AvailableRoles.moderator],
                 },
                 method: 'POST',
             }),
