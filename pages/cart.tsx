@@ -12,6 +12,7 @@ import { PurchaseForm } from '../components/PurchaseForm';
 import { useCreateCartMutation } from '../store/cart/cartApi';
 import { useEffect } from 'react';
 import { setSavedCart } from '../store/cart/cartActions';
+import { ProductDTO } from '../types/types';
 
 export default function Cart() {
     const { products, savedCart } = useSelector(
@@ -36,8 +37,10 @@ export default function Cart() {
         if (createCartResponse.isSuccess) {
             dispatch(
                 setSavedCart(
-                    createCartResponse.data.products,
-                    createCartResponse.data._id,
+                    createCartResponse.data.products as (ProductDTO & {
+                        quantity: number;
+                    })[],
+                    createCartResponse.data._id as string,
                 ),
             );
         }

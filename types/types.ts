@@ -12,6 +12,7 @@ export type ProductDTO = {
 };
 
 export type CartDTO = {
+    _id?: string;
     cartId: string;
     products: (ProductDTO & { quantity: number })[];
     comment: string;
